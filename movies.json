@@ -4,7 +4,7 @@
       "id": 1,
       "title": "Test Movie",
       "description": "This is a test movie from Internet Archive",
-      "poster": "https://via.placeholder.com/300x450/FF6B35/white?text=TEST+MOVIE",
+      "poster": "https://archive.org/download/screenrecorder-2025-10-07-18-17-46-629/poster.jpg",
       "videoUrl": "<iframe src='https://archive.org/embed/screenrecorder-2025-10-07-18-17-46-629' width='800' height='450' frameborder='0' webkitallowfullscreen='true' mozallowfullscreen='true' allowfullscreen></iframe>",
       "genre": "Available Movies"
     }
