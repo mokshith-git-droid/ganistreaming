@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GANI STREAMING - Movies</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #141414; color: white; font-family: Arial, sans-serif; }
+        
+        header { 
+            background: linear-gradient(180deg, #000, transparent);
+            padding: 20px; display: flex; justify-content: space-between;
+            align-items: center; position: fixed; width: 100%; z-index: 100;
+        }
+        header h2 { color: #FF6B35; font-size: 1.5em; font-weight: bold; }
+        
+        .movie-list { 
+            padding: 100px 20px 20px; max-width: 1200px; margin: 0 auto;
+        }
+        .movie-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px; margin-top: 20px;
+        }
+        .movie-card {
+            background: #2d2d2d; border-radius: 8px; overflow: hidden;
+            cursor: pointer; transition: transform 0.3s;
+        }
+        .movie-card:hover { transform: scale(1.05); }
+        .movie-poster { width: 100%; height: 300px; object-fit: cover; }
+        .movie-info { padding: 15px; }
+        .movie-title { font-weight: bold; margin-bottom: 5px; }
+        .movie-desc { color: #ccc; font-size: 0.9em; }
+        button { 
+            background: #FF6B35; color: white; border: none;
+            padding: 10px 20px; border-radius: 5px; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>🎬 GANI STREAMING</h2>
+        <button onclick="logout()">🔒 Logout</button>
+    </header>
+    
+    <div class="movie-list">
+        <h3>Available Movies</h3>
+        <div id="moviesContainer" class="movie-grid">
+            <!-- Movies will load here -->
+        </div>
+    </div>
+
+    <script>
+        // Load and display movies
+        async function loadMovies() {
+            try {
+                const response = await fetch('movies.json');
+                const data = await response.json();
+                displayMovies(data.movies);
+            } catch (error) {
+                document.getElementById('moviesContainer').innerHTML = 
+                    '<p style="color: #FF6B35;">Error loading movies. Check movies.json file.</p>';
+            }
+        }
+
+        function displayMovies(movies) {
+            const container = document.getElementById('moviesContainer');
+            container.innerHTML = movies.map(movie => `
+                <div class="movie-card" onclick="playMovie(${movie.id})">
+                    <img src="${movie.poster}" alt="${movie.title}" class="movie-poster"
+                         onerror="this.src='https://via.placeholder.com/300x450/333/white?text=NO+POSTER'">
+                    <div class="movie-info">
+                        <div class="movie-title">${movie.title}</div>
+                        <div class="movie-desc">${movie.description.substring(0, 60)}...</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function playMovie(movieId) {
+            // Redirect to player page with movie ID
+            window.location.href = `player.html?movie=${movieId}`;
+        }
+
+        function logout() {
+            window.location.href = "index.html";
+        }
+
+        // Load movies when page opens
+        loadMovies();
+    </script>
+</body>
+</html>
