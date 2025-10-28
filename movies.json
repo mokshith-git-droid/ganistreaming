@@ -1,0 +1,22 @@
+{
+  "movies": [
+    {
+      "id": 1,
+      "title": "Sample Movie 1",
+      "description": "This is a sample movie with subtitle support",
+      "poster": "https://via.placeholder.com/300x450/FF6B35/white?text=POSTER+1",
+      "videoUrl": "https://your-direct-onedrive-mp4-link-1",
+      "subtitleUrl": "https://your-direct-onedrive-srt-link-1",
+      "genre": "Available Movies"
+    },
+    {
+      "id": 2,
+      "title": "Sample Movie 2", 
+      "description": "Another movie with embedded subtitles",
+      "poster": "https://via.placeholder.com/300x450/00D4FF/white?text=POSTER+2",
+      "videoUrl": "https://your-direct-onedrive-mp4-link-2",
+      "subtitleUrl": "https://your-direct-onedrive-srt-link-2",
+      "genre": "Available Movies"
+    }
+  ]
+}
