@@ -25,6 +25,14 @@
             text-align: center; 
             margin: 20px 0; 
         }
+        #moviePoster {
+            width: 300px;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+        }
         #videoContainer {
             text-align: center;
             margin: 20px 0;
@@ -39,6 +47,8 @@
     <button class="back-btn" onclick="goBack()">← Back to Movies</button>
     
     <div class="player-info">
+        <!-- POSTER WILL APPEAR HERE -->
+        <img id="moviePoster" src="" alt="Movie Poster">
         <h2 id="movieTitle">Loading...</h2>
         <p id="movieDescription"></p>
     </div>
@@ -48,7 +58,6 @@
 
     <script>
         async function loadMovie() {
-            // Get movie ID from URL
             const urlParams = new URLSearchParams(window.location.search);
             const movieId = urlParams.get('movie');
             
@@ -64,12 +73,14 @@
                 const movie = data.movies.find(m => m.id == movieId);
                 
                 if (movie) {
+                    // SET POSTER IMAGE
+                    document.getElementById('moviePoster').src = movie.poster;
                     document.getElementById('movieTitle').textContent = movie.title;
                     document.getElementById('movieDescription').textContent = movie.description;
                     
                     // INSERT EMBED IFRAME
                     const videoContainer = document.getElementById('videoContainer');
-                    videoContainer.innerHTML = movie.videoUrl; // Your iframe embed code
+                    videoContainer.innerHTML = movie.videoUrl;
                     
                 } else {
                     alert('Movie not found');
@@ -85,7 +96,6 @@
             window.location.href = "movies.html";
         }
 
-        // Load movie when page opens
         loadMovie();
     </script>
 </body>
