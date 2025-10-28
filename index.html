@@ -3,19 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GANI STREAMING SERVICES</title>
+    <title>GANI STREAMING - PIN</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #141414; color: white; font-family: Arial, sans-serif; }
-        
-        /* Screens */
-        .screen { display: none; min-height: 100vh; }
-        .screen.active { display: block; }
-        
-        /* PIN Screen */
-        #pinScreen { 
+        body { 
             background: linear-gradient(45deg, #1a1a1a, #FF6B35);
-            display: flex; align-items: center; justify-content: center;
+            color: white; font-family: Arial, sans-serif;
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
         }
         .pin-container { 
             text-align: center; background: rgba(0,0,0,0.8); 
@@ -36,137 +30,32 @@
             padding: 15px 30px; font-size: 1.1em; border-radius: 8px;
             cursor: pointer; margin-top: 15px; font-weight: bold;
         }
-        
-        /* Main App */
-        header { 
-            background: linear-gradient(180deg, #000, transparent);
-            padding: 20px; display: flex; justify-content: space-between;
-            align-items: center; position: fixed; width: 100%; z-index: 100;
-        }
-        header h2 { color: #FF6B35; font-size: 1.5em; font-weight: bold; }
-        
-        .movie-list { 
-            padding: 100px 20px 20px; max-width: 1200px; margin: 0 auto;
-        }
-        .movie-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px; margin-top: 20px;
-        }
-        .movie-card {
-            background: #2d2d2d; border-radius: 8px; overflow: hidden;
-            cursor: pointer; transition: transform 0.3s;
-        }
-        .movie-card:hover { transform: scale(1.05); }
-        .movie-poster { width: 100%; height: 300px; object-fit: cover; }
-        .movie-info { padding: 15px; }
-        .movie-title { font-weight: bold; margin-bottom: 5px; }
-        .movie-desc { color: #ccc; font-size: 0.9em; }
-        
-        /* Player */
-        #playerScreen { padding: 80px 20px 20px; }
-        .back-btn { background: #666; margin-bottom: 20px; }
-        #videoPlayer { 
-            width: 100%; max-width: 800px; height: 400px;
-            background: #000; border-radius: 8px;
-        }
-        .player-info { 
-            max-width: 800px; margin: 20px auto;
-            text-align: center; 
-        }
-        .subtitle-btn { 
-            background: #444; margin: 10px 5px;
-            padding: 8px 15px; font-size: 0.9em;
-        }
     </style>
 </head>
 <body>
-    <!-- PIN Screen -->
-    <div id="pinScreen" class="screen active">
-        <div class="pin-container">
-            <h1>GANI STREAMING</h1>
-            <p>Enter PIN to access your personal movies</p>
-            <input type="password" id="pinInput" maxlength="4" placeholder="Enter PIN">
-            <button onclick="checkPin()">UNLOCK STREAMING</button>
-        </div>
+    <div class="pin-container">
+        <h1>GANI STREAMING</h1>
+        <p>Enter PIN to access your personal movies</p>
+        <input type="password" id="pinInput" maxlength="4" placeholder="Enter PIN">
+        <button onclick="checkPin()">UNLOCK STREAMING</button>
     </div>
 
-    <!-- Main App -->
-    <div id="mainApp" class="screen">
-        <header>
-            <h2>🎬 GANI STREAMING</h2>
-            <button onclick="logout()">🔒 Logout</button>
-        </header>
-        
-        <div class="movie-list">
-            <h3>Available Movies</h3>
-            <div id="moviesContainer" class="movie-grid">
-                <!-- Movies will be loaded here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Player Screen -->
-    <div id="playerScreen" class="screen">
-        <button class="back-btn" onclick="showMainApp()">← Back to Movies</button>
-        <div class="player-info">
-            <h2 id="playerTitle"></h2>
-            <p id="playerDescription"></p>
-            <div id="subtitleControls"></div>
-        </div>
-        <center>
-            <video id="videoPlayer" controls crossorigin="anonymous">
-                Your browser does not support the video tag.
-            </video>
-        </center>
-    </div>
-<script>
-    const CORRECT_PIN = "2010";
-
-    // Check PIN - SIMPLIFIED VERSION
-    function checkPin() {
-        const pin = document.getElementById('pinInput').value;
-        if (pin === CORRECT_PIN) {
-            // DIRECTLY SHOW MAIN APP - don't wait for movies
-            showScreen('mainApp');
-            loadMovies(); // Try to load movies in background
-        } else {
-            alert('Wrong PIN! Try again.');
-            document.getElementById('pinInput').value = '';
-        }
-    }
-
-    // Load movies - WITH BETTER ERROR HANDLING
-    async function loadMovies() {
-        try {
-            const response = await fetch('./movies.json');
-            if (!response.ok) throw new Error('File not found');
-            
-            const data = await response.json();
-            if (data.movies && data.movies.length > 0) {
-                displayMovies(data.movies);
+    <script>
+        function checkPin() {
+            const pin = document.getElementById('pinInput').value;
+            if (pin === "2010") {
+                // SIMPLE REDIRECT - this will definitely work!
+                window.location.href = "movies.html";
             } else {
-                showNoMoviesMessage();
+                alert('Wrong PIN! Try again.');
+                document.getElementById('pinInput').value = '';
             }
-        } catch (error) {
-            console.log('No movies file found - using sample');
-            showNoMoviesMessage();
         }
-    }
 
-    // Show message when no movies
-    function showNoMoviesMessage() {
-        document.getElementById('moviesContainer').innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #FF6B35;">
-                <h3>Welcome to GANI STREAMING! 🎬</h3>
-                <p>Add your movies by editing movies.json file</p>
-                <button onclick="addSampleMovie()" style="margin-top: 20px;">
-                    Show Sample Movie
-                </button>
-            </div>
-        `;
-    }
-
-    // Rest of your functions remain the same...
-</script>
+        // Enter key support
+        document.getElementById('pinInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPin();
+        });
+    </script>
 </body>
 </html>
