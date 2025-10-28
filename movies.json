@@ -5,8 +5,7 @@
       "title": "Sample Movie 1",
       "description": "This is a sample movie with subtitle support",
       "poster": "https://via.placeholder.com/300x450/FF6B35/white?text=POSTER+1",
-      "videoUrl": "https://your-direct-onedrive-mp4-link-1",
-      "subtitleUrl": "https://your-direct-onedrive-srt-link-1",
+      "videoUrl": "<iframe src="https://1drv.ms/v/c/8ae763eb3637614b/IQQcHjg2BkMET5ymj6CxvOzEAX1X0LCJiBmg1NQEdHbbMWI" width="480" height="720" frameborder="0" scrolling="no" allowfullscreen></iframe>": "https://your-direct-onedrive-srt-link-1",
       "genre": "Available Movies"
     },
     {
