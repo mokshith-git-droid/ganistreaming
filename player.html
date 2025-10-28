@@ -6,18 +6,33 @@
     <title>GANI STREAMING - Player</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #141414; color: white; font-family: Arial, sans-serif; padding: 20px; }
+        body { 
+            background: #141414; 
+            color: white; 
+            font-family: Arial, sans-serif; 
+            padding: 20px;
+        }
         .back-btn { 
-            background: #666; color: white; border: none;
-            padding: 10px 20px; border-radius: 5px; cursor: pointer;
+            background: #666; 
+            color: white; 
+            border: none;
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer;
             margin-bottom: 20px;
         }
-        #videoPlayer { 
-            width: 100%; max-width: 800px; height: 400px;
-            background: #000; border-radius: 8px; display: block;
-            margin: 20px auto;
+        .player-info { 
+            text-align: center; 
+            margin: 20px 0; 
         }
-        .player-info { text-align: center; margin: 20px 0; }
+        #videoContainer {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #videoContainer iframe {
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+        }
     </style>
 </head>
 <body>
@@ -28,9 +43,8 @@
         <p id="movieDescription"></p>
     </div>
 
-    <video id="videoPlayer" controls>
-        Your browser does not support the video tag.
-    </video>
+    <!-- Video embed will appear here -->
+    <div id="videoContainer"></div>
 
     <script>
         async function loadMovie() {
@@ -53,26 +67,16 @@
                     document.getElementById('movieTitle').textContent = movie.title;
                     document.getElementById('movieDescription').textContent = movie.description;
                     
-                    const videoPlayer = document.getElementById('videoPlayer');
-                    videoPlayer.innerHTML = `<source src="${movie.videoUrl}" type="video/mp4">`;
+                    // INSERT EMBED IFRAME
+                    const videoContainer = document.getElementById('videoContainer');
+                    videoContainer.innerHTML = movie.videoUrl; // Your iframe embed code
                     
-                    if (movie.subtitleUrl) {
-                        const track = document.createElement('track');
-                        track.src = movie.subtitleUrl;
-                        track.kind = 'subtitles';
-                        track.srclang = 'en';
-                        track.label = 'English';
-                        track.default = true;
-                        videoPlayer.appendChild(track);
-                    }
-                    
-                    videoPlayer.load();
                 } else {
                     alert('Movie not found');
                     goBack();
                 }
             } catch (error) {
-                alert('Error loading movie');
+                alert('Error loading movie: ' + error.message);
                 goBack();
             }
         }
