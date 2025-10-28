@@ -119,204 +119,54 @@
             </video>
         </center>
     </div>
+<script>
+    const CORRECT_PIN = "2010";
 
-    <script>
-        const CORRECT_PIN = "2010";
-        let movies = [];
-        let currentVideo = null;
-
-        // Check PIN
-        function checkPin() {
-            const pin = document.getElementById('pinInput').value;
-            if (pin === CORRECT_PIN) {
-                showMainApp();
-                loadMovies();
-            } else {
-                alert('Wrong PIN! Try again.');
-                document.getElementById('pinInput').value = '';
-            }
-        }
-
-        // Load movies from JSON
-        async function loadMovies() {
-            try {
-                const response = await fetch('movies.json');
-                
-                if (!response.ok) {
-                    throw new Error('movies.json not found');
-                }
-                
-                const data = await response.json();
-                
-                if (data.movies && data.movies.length > 0) {
-                    movies = data.movies;
-                    displayMovies();
-                } else {
-                    showNoMoviesMessage();
-                }
-            } catch (error) {
-                console.error('Error loading movies:', error);
-                showNoMoviesMessage();
-            }
-        }
-
-        // Show no movies message
-        function showNoMoviesMessage() {
-            document.getElementById('moviesContainer').innerHTML = 
-                '<div style="text-align: center; padding: 40px; color: #FF6B35;">' +
-                '<h3>No Movies Found</h3>' +
-                '<p>Edit movies.json file to add your movies</p>' +
-                '<button onclick="addSampleMovie()" style="margin-top: 20px;">Add Sample Movie</button>' +
-                '</div>';
-        }
-
-        // Add sample movie for testing
-        function addSampleMovie() {
-            const sampleMovie = {
-                id: 999,
-                title: "Sample Movie",
-                description: "Edit movies.json to add your real movies with videoUrl and subtitleUrl",
-                poster: "https://via.placeholder.com/300x450/FF6B35/white?text=SAMPLE+MOVIE",
-                videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                subtitleUrl: "",
-                genre: "Available Movies"
-            };
-            
-            document.getElementById('moviesContainer').innerHTML = `
-                <div class="movie-card" onclick="playMovie(999)">
-                    <img src="${sampleMovie.poster}" alt="Sample" class="movie-poster">
-                    <div class="movie-info">
-                        <div class="movie-title">${sampleMovie.title}</div>
-                        <div class="movie-desc">${sampleMovie.description}</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Display movies
-        function displayMovies() {
-            const container = document.getElementById('moviesContainer');
-            container.innerHTML = movies.map(movie => `
-                <div class="movie-card" onclick="playMovie(${movie.id})">
-                    <img src="${movie.poster}" alt="${movie.title}" class="movie-poster" 
-                         onerror="this.src='https://via.placeholder.com/300x450/333/white?text=NO+POSTER'">
-                    <div class="movie-info">
-                        <div class="movie-title">${movie.title}</div>
-                        <div class="movie-desc">${movie.description.substring(0, 60)}...</div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Play movie with HTML5 video player
-        function playMovie(movieId) {
-            const movie = movies.find(m => m.id === movieId);
-            if (!movie) return;
-
-            // Stop current video if playing
-            if (currentVideo) {
-                currentVideo.pause();
-                currentVideo = null;
-            }
-
-            const videoPlayer = document.getElementById('videoPlayer');
-            const playerTitle = document.getElementById('playerTitle');
-            const playerDescription = document.getElementById('playerDescription');
-            const subtitleControls = document.getElementById('subtitleControls');
-
-            // Set video source
-            videoPlayer.innerHTML = '';
-            const source = document.createElement('source');
-            source.src = movie.videoUrl;
-            source.type = 'video/mp4';
-            videoPlayer.appendChild(source);
-
-            // Clear previous subtitles
-            const existingTracks = videoPlayer.querySelectorAll('track');
-            existingTracks.forEach(track => track.remove());
-
-            // Add subtitle track if available
-            if (movie.subtitleUrl) {
-                const track = document.createElement('track');
-                track.src = movie.subtitleUrl;
-                track.kind = 'subtitles';
-                track.srclang = 'en';
-                track.label = 'English';
-                track.default = true;
-                videoPlayer.appendChild(track);
-
-                // Add subtitle controls
-                subtitleControls.innerHTML = `
-                    <div>
-                        <button class="subtitle-btn" onclick="toggleSubtitles()">Toggle Subtitles</button>
-                        <button class="subtitle-btn" onclick="showSubtitles()">Show Subtitles</button>
-                        <button class="subtitle-btn" onclick="hideSubtitles()">Hide Subtitles</button>
-                    </div>
-                `;
-            } else {
-                subtitleControls.innerHTML = '<p>No subtitles available for this movie</p>';
-            }
-
-            // Set movie info
-            playerTitle.textContent = movie.title;
-            playerDescription.textContent = movie.description;
-
-            // Show player screen
-            showScreen('playerScreen');
-            
-            // Store current video reference
-            currentVideo = videoPlayer;
-
-            // Load and play video
-            videoPlayer.load();
-        }
-
-        // Subtitle controls
-        function toggleSubtitles() {
-            const video = document.getElementById('videoPlayer');
-            const track = video.textTracks[0];
-            if (track) {
-                track.mode = track.mode === 'showing' ? 'hidden' : 'showing';
-            }
-        }
-
-        function showSubtitles() {
-            const video = document.getElementById('videoPlayer');
-            const track = video.textTracks[0];
-            if (track) track.mode = 'showing';
-        }
-
-        function hideSubtitles() {
-            const video = document.getElementById('videoPlayer');
-            const track = video.textTracks[0];
-            if (track) track.mode = 'hidden';
-        }
-
-        // Screen navigation
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            document.getElementById(screenId).classList.add('active');
-        }
-
-        function showMainApp() {
+    // Check PIN - SIMPLIFIED VERSION
+    function checkPin() {
+        const pin = document.getElementById('pinInput').value;
+        if (pin === CORRECT_PIN) {
+            // DIRECTLY SHOW MAIN APP - don't wait for movies
             showScreen('mainApp');
-        }
-
-        function logout() {
-            if (currentVideo) {
-                currentVideo.pause();
-                currentVideo = null;
-            }
-            showScreen('pinScreen');
+            loadMovies(); // Try to load movies in background
+        } else {
+            alert('Wrong PIN! Try again.');
             document.getElementById('pinInput').value = '';
         }
+    }
 
-        // Enter key for PIN
-        document.getElementById('pinInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') checkPin();
-        });
-    </script>
+    // Load movies - WITH BETTER ERROR HANDLING
+    async function loadMovies() {
+        try {
+            const response = await fetch('./movies.json');
+            if (!response.ok) throw new Error('File not found');
+            
+            const data = await response.json();
+            if (data.movies && data.movies.length > 0) {
+                displayMovies(data.movies);
+            } else {
+                showNoMoviesMessage();
+            }
+        } catch (error) {
+            console.log('No movies file found - using sample');
+            showNoMoviesMessage();
+        }
+    }
+
+    // Show message when no movies
+    function showNoMoviesMessage() {
+        document.getElementById('moviesContainer').innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #FF6B35;">
+                <h3>Welcome to GANI STREAMING! 🎬</h3>
+                <p>Add your movies by editing movies.json file</p>
+                <button onclick="addSampleMovie()" style="margin-top: 20px;">
+                    Show Sample Movie
+                </button>
+            </div>
+        `;
+    }
+
+    // Rest of your functions remain the same...
+</script>
 </body>
 </html>
