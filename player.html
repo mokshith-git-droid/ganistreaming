@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GANI STREAMING - Player</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #141414; color: white; font-family: Arial, sans-serif; padding: 20px; }
+        .back-btn { 
+            background: #666; color: white; border: none;
+            padding: 10px 20px; border-radius: 5px; cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #videoPlayer { 
+            width: 100%; max-width: 800px; height: 400px;
+            background: #000; border-radius: 8px; display: block;
+            margin: 20px auto;
+        }
+        .player-info { text-align: center; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Back to Movies</button>
+    
+    <div class="player-info">
+        <h2 id="movieTitle">Loading...</h2>
+        <p id="movieDescription"></p>
+    </div>
+
+    <video id="videoPlayer" controls>
+        Your browser does not support the video tag.
+    </video>
+
+    <script>
+        async function loadMovie() {
+            // Get movie ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const movieId = urlParams.get('movie');
+            
+            if (!movieId) {
+                alert('No movie selected');
+                goBack();
+                return;
+            }
+
+            try {
+                const response = await fetch('movies.json');
+                const data = await response.json();
+                const movie = data.movies.find(m => m.id == movieId);
+                
+                if (movie) {
+                    document.getElementById('movieTitle').textContent = movie.title;
+                    document.getElementById('movieDescription').textContent = movie.description;
+                    
+                    const videoPlayer = document.getElementById('videoPlayer');
+                    videoPlayer.innerHTML = `<source src="${movie.videoUrl}" type="video/mp4">`;
+                    
+                    if (movie.subtitleUrl) {
+                        const track = document.createElement('track');
+                        track.src = movie.subtitleUrl;
+                        track.kind = 'subtitles';
+                        track.srclang = 'en';
+                        track.label = 'English';
+                        track.default = true;
+                        videoPlayer.appendChild(track);
+                    }
+                    
+                    videoPlayer.load();
+                } else {
+                    alert('Movie not found');
+                    goBack();
+                }
+            } catch (error) {
+                alert('Error loading movie');
+                goBack();
+            }
+        }
+
+        function goBack() {
+            window.location.href = "movies.html";
+        }
+
+        // Load movie when page opens
+        loadMovie();
+    </script>
+</body>
+</html>
