@@ -2,20 +2,10 @@
   "movies": [
     {
       "id": 1,
-      "title": "Rohit say happy diwali",
-      "description": "This is a sample movie with subtitle support",
-      "poster": "https://drive.google.com/file/d/1mV0z-X_1kVSqebRTr29M_6eDAArx-Gex/view?usp=drivesdk",
-      "videoUrl": "https://drive.google.com/file/d/141TbVHP06MX9MwigsEHIarYMh1_QhxLm/view?usp=drivesdk",
-      "subtitle Url1": "https://your-direct-onedrive-srt-link-1",
-      "genre": "Available Movies"
-    },
-    {
-      "id": 2,
-      "title": "Sample Movie 2", 
-      "description": "Another movie with embedded subtitles",
-      "poster": "https://via.placeholder.com/300x450/00D4FF/white?text=POSTER+2",
-      "videoUrl": "https://your-direct-onedrive-mp4-link-2",
-      "subtitleUrl": "https://your-direct-onedrive-srt-link-2",
+      "title": "Test Movie",
+      "description": "This is a test movie from Internet Archive",
+      "poster": "https://via.placeholder.com/300x450/FF6B35/white?text=TEST+MOVIE",
+      "videoUrl": "<iframe src='https://archive.org/embed/screenrecorder-2025-10-07-18-17-46-629' width='800' height='450' frameborder='0' webkitallowfullscreen='true' mozallowfullscreen='true' allowfullscreen></iframe>",
       "genre": "Available Movies"
     }
   ]
