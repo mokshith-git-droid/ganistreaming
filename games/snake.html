@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game - GANI HUB</title>
+    <title>Snake Game - GANI HUB (Mobile Ready)</title>
     <style>
+        /* General Styles & Layout */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: #141414; 
@@ -77,8 +78,9 @@
         }
         .game-controls {
             margin-top: 30px;
-            display: flex; /* Ensure controls are aligned */
+            display: flex;
             gap: 10px;
+            justify-content: center;
         }
         .control-btn {
             background: #FF6B35;
@@ -87,7 +89,6 @@
             padding: 12px 25px;
             border-radius: 8px;
             cursor: pointer;
-            margin: 0 5px; /* Adjust margin for flex layout */
             font-size: 1em;
             transition: transform 0.2s;
         }
@@ -98,6 +99,45 @@
             margin-top: 20px;
             color: #ccc;
             font-size: 0.9em;
+        }
+
+        /* Mobile Controls D-Pad Styling */
+        .dpad-container {
+            margin-top: 30px;
+            display: grid;
+            grid-template-areas: ". up ." "left center right" ". down .";
+            gap: 5px;
+            width: 180px; /* Set a fixed size for the D-pad area */
+        }
+
+        .dpad-btn {
+            background: #2d2d2d;
+            color: #00D4FF;
+            border: 2px solid #00D4FF;
+            padding: 15px;
+            font-size: 1.5em;
+            border-radius: 10px;
+            cursor: pointer;
+            user-select: none; /* Prevent text selection on mobile */
+            -webkit-tap-highlight-color: transparent; /* Remove tap delay/highlight */
+        }
+        .dpad-btn:active {
+             background: #00D4FF;
+             color: #2d2d2d;
+        }
+
+        #up-btn { grid-area: up; }
+        #down-btn { grid-area: down; }
+        #left-btn { grid-area: left; }
+        #right-btn { grid-area: right; }
+        #center-pad { grid-area: center; visibility: hidden; } /* Placeholder for center */
+
+        /* Hide desktop instructions on small screens and vice-versa */
+        @media (max-width: 600px) {
+            .instructions p:last-child { display: none; } /* Hide keyboard info */
+        }
+        @media (min-width: 601px) {
+            .dpad-container { display: none; } /* Hide D-pad on desktop */
         }
     </style>
 </head>
@@ -112,7 +152,7 @@
                 <div class="stat" id="score">Score: 0</div>
                 <div class="stat" id="highScore">High Score: 0</div>
             </div>
-            <div class="status" id="gameStatus">Use arrow keys to move!</div>
+            <div class="status" id="gameStatus">Use controls to move!</div>
         </div>
 
         <div class="game-area">
@@ -123,6 +163,14 @@
                 <button onclick="startGame()" class="control-btn">🔄 Play Again</button>
             </div>
         </div>
+        
+        <div class="dpad-container">
+            <div id="up-btn" class="dpad-btn" ontouchstart="changeDirection(38)">&#9650;</div>
+            <div id="left-btn" class="dpad-btn" ontouchstart="changeDirection(37)">&#9664;</div>
+            <div id="center-pad"></div>
+            <div id="right-btn" class="dpad-btn" ontouchstart="changeDirection(39)">&#9654;</div>
+            <div id="down-btn" class="dpad-btn" ontouchstart="changeDirection(40)">&#9660;</div>
+        </div>
 
         <div class="game-controls">
             <button onclick="startGame()" class="control-btn">🔄 New Game</button>
@@ -130,7 +178,8 @@
         </div>
 
         <div class="instructions">
-            <p>Use ← ↑ → ↓ arrow keys to control the snake</p>
+            <p>Use the on-screen buttons to control the snake.</p>
+            <p>Use ← ↑ → ↓ arrow keys to control the snake (Desktop).</p>
         </div>
     </div>
 
@@ -149,14 +198,15 @@
         let highScore = 0;
         let gameRunning = false;
         let gameLoop;
-        // Flag to prevent the snake from immediately reversing direction in one frame
         let changingDirection = false; 
+
+        // --- Core Game Functions ---
 
         function startGame() {
             snake = [{x: 10, y: 10}];
             generateFood();
             
-            // Set an initial movement direction (e.g., right)
+            // Start moving right by default
             dx = 1; 
             dy = 0;
             
@@ -170,14 +220,12 @@
             document.getElementById('pauseBtn').textContent = '⏸ Pause';
             
             if (gameLoop) clearInterval(gameLoop);
-            // Set the game speed
             gameLoop = setInterval(updateGame, 100); 
         }
 
         function updateGame() {
             if (!gameRunning) return;
             
-            // Move snake: Create the new head position
             const head = {x: snake[0].x + dx, y: snake[0].y + dy};
             
             // Check wall collision
@@ -194,7 +242,7 @@
                 }
             }
             
-            snake.unshift(head); // Add new head to the front
+            snake.unshift(head);
             
             // Check food collision
             if (head.x === food.x && head.y === food.y) {
@@ -202,7 +250,7 @@
                 document.getElementById('score').textContent = `Score: ${score}`;
                 generateFood();
             } else {
-                snake.pop(); // Remove tail if no food was eaten (moves the snake)
+                snake.pop(); // Remove tail
             }
             
             changingDirection = false; // Allow direction changes again after this frame update
@@ -217,7 +265,6 @@
             // Draw snake
             ctx.fillStyle = '#00D4FF';
             for (let segment of snake) {
-                // Draw a segment, leaving a small gap for grid effect
                 ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
             }
             
@@ -232,10 +279,9 @@
                 y: Math.floor(Math.random() * tileCount)
             };
             
-            // Make sure food doesn't appear on snake
             for (let segment of snake) {
                 if (food.x === segment.x && food.y === segment.y) {
-                    generateFood(); // Re-run if collision
+                    generateFood(); 
                     return;
                 }
             }
@@ -256,7 +302,6 @@
         }
 
         function pauseGame() {
-            // Prevent pausing if the game has already ended
             const isGameOver = document.getElementById('gameOver').style.display === 'block';
             if (isGameOver) return; 
 
@@ -271,17 +316,22 @@
             }
         }
 
-        // Keyboard controls
-        document.addEventListener('keydown', (e) => {
+        function goBack() {
+            window.location.href = "games.html"; 
+        }
+        
+        // --- Control Logic (Unifies Keyboard and Mobile) ---
+        
+        // Central function to handle all direction input
+        function changeDirection(keyPressed) {
             // Only allow change if game is running AND a direction change hasn't happened this frame
             if (!gameRunning || changingDirection) return;
-            
+
             const LEFT_KEY = 37;
             const RIGHT_KEY = 39;
             const UP_KEY = 38;
             const DOWN_KEY = 40;
             
-            const keyPressed = e.keyCode;
             const goingUp = dy === -1;
             const goingDown = dy === 1;
             const goingRight = dx === 1;
@@ -311,12 +361,13 @@
                 dy = newDy;
                 changingDirection = true; // Set flag to prevent further changes until next frame
             }
-        });
-
-        function goBack() {
-            // Function to handle the back button (assumes games.html exists)
-            window.location.href = "games.html";
         }
+
+
+        // Keyboard controls (Desktop)
+        document.addEventListener('keydown', (e) => {
+            changeDirection(e.keyCode);
+        });
 
         // Start the game when page loads
         startGame();
