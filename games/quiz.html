@@ -1,1 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game - GANI HUB</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #141414; 
+            color: white; 
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .back-btn { 
+            background: #666; 
+            color: white; 
+            border: none;
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            cursor: pointer;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: #FF6B35;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        .game-info {
+            margin-bottom: 30px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .stat {
+            background: #2d2d2d;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.2em;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #444;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background: #FF6B35;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .quiz-container {
+            background: #2d2d2d;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .question {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            color: white;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .option {
+            background: #3d3d3d;
+            border: 2px solid #555;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+        .option:hover {
+            background: #4d4d4d;
+            border-color: #FF6B35;
+        }
+        .option.correct {
+            background: #006400;
+            border-color: #00FF00;
+        }
+        .option.incorrect {
+            background: #8B0000;
+            border-color: #FF4444;
+        }
+        .game-controls {
+            margin-top: 30px;
+        }
+        .control-btn {
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 1em;
+            transition: transform 0.2s;
+        }
+        .control-btn:hover {
+            transform: scale(1.05);
+        }
+        .result {
+            display: none;
+            background: #2d2d2d;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .result h2 {
+            color: #FF6B35;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Back to Games</button>
 
+    <div class="container">
+        <h1>❓ Quiz Game</h1>
+        
+        <div class="game-info">
+            <div class="stats">
+                <div class="stat" id="score">Score: 0</div>
+                <div class="stat" id="questionCount">Question: 1/10</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+
+        <div class="quiz-container" id="quizContainer">
+            <div class="question" id="question">Loading question...</div>
+            <div class="options" id="options">
+                <!-- Options will be loaded here -->
+            </div>
+        </div>
+
+        <div class="result" id="result">
+            <h2>Quiz Completed! 🎉</h2>
+            <p id="finalScore">Your final score: 0/10</p>
+            <button onclick="startQuiz()" class="control-btn">🔄 Play Again</button>
+        </div>
+
+        <div class="game-controls">
+            <button onclick="startQuiz()" class="control-btn">🔄 New Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                options: ["London", "Berlin", "Paris", "Madrid"],
+                correct: 2
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                correct: 1
+            },
+            {
+                question: "What is 2 + 2?",
+                options: ["3", "4", "5", "6"],
+                correct: 1
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                options: ["Van Gogh", "Picasso", "Da Vinci", "Monet"],
+                correct: 2
+            },
+            {
+                question: "What is the largest mammal?",
+                options: ["Elephant", "Blue Whale", "Giraffe", "Polar Bear"],
+                correct: 1
+            },
+            {
+                question: "Which element has the chemical symbol 'O'?",
+                options: ["Gold", "Oxygen", "Osmium", "Oganesson"],
+                correct: 1
+            },
+            {
+                question: "How many continents are there?",
+                options: ["5", "6", "7", "8"],
+                correct: 2
+            },
+            {
+                question: "What is the speed of light?",
+                options: ["299,792 km/s", "150,000 km/s", "1,000 km/s", "500 km/s"],
+                correct: 0
+            },
+            {
+                question: "Which year did World War II end?",
+                options: ["1944", "1945", "1946", "1947"],
+                correct: 1
+            },
+            {
+                question: "What is the largest ocean?",
+                options: ["Atlantic", "Indian", "Arctic", "Pacific"],
+                correct: 3
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let quizActive = false;
+
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            quizActive = true;
+            
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('score').textContent = `Score: ${score}`;
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                endQuiz();
+                return;
+            }
+
+            const question = questions[currentQuestion];
+            document.getElementById('question').textContent = question.question;
+            document.getElementById('questionCount').textContent = `Question: ${currentQuestion + 1}/${questions.length}`;
+            document.getElementById('progress').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+
+        function selectAnswer(selectedIndex) {
+            if (!quizActive) return;
+
+            const question = questions[currentQuestion];
+            const options = document.getElementsByClassName('option');
+            
+            // Disable all options
+            for (let option of options) {
+                option.onclick = null;
+            }
+
+            // Show correct/incorrect
+            if (selectedIndex === question.correct) {
+                options[selectedIndex].classList.add('correct');
+                score++;
+                document.getElementById('score').textContent = `Score: ${score}`;
+            } else {
+                options[selectedIndex].classList.add('incorrect');
+                options[question.correct].classList.add('correct');
+            }
+
+            // Move to next question after delay
+            setTimeout(() => {
+                currentQuestion++;
+                loadQuestion();
+            }, 2000);
+        }
+
+        function endQuiz() {
+            quizActive = false;
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('finalScore').textContent = `Your final score: ${score}/${questions.length}`;
+        }
+
+        function goBack() {
+            window.location.href = "games.html";
+        }
+
+        // Start the quiz when page loads
+        startQuiz();
+    </script>
+</body>
+</html>
