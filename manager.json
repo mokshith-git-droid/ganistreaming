@@ -65,16 +65,33 @@
       "title": "Tic Tac Toe",
       "description": "Classic X and O game against computer",
       "thumbnail": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/games/tictactoe.jpg",
-      "gameUrl": "games/tictactoe.html",
+      "gameUrl": "tictactoe.html",  // CHANGED: Removed "games/"
       "category": "Puzzle"
     },
     {
       "id": 2,
-      "title": "Memory Game",
-      "description": "Test your memory by matching pairs",
+      "title": "Memory Game", 
+      "description": "Test your memory by matching pairs of cards",
       "thumbnail": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/games/memory.jpg",
-      "gameUrl": "games/memory.html",
+      "gameUrl": "memory.html",  // CHANGED: Removed "games/"
       "category": "Memory"
+    },
+    {
+      "id": 3,
+      "title": "Snake Game",
+      "description": "Classic snake game - eat food and grow",
+      "thumbnail": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/games/snake.jpg",
+      "gameUrl": "snake.html",  // CHANGED: Removed "games/"
+      "category": "Arcade"
+    },
+    {
+      "id": 4, 
+      "title": "Quiz Game",
+      "description": "Test your knowledge with fun trivia questions",
+      "thumbnail": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/games/quiz.jpg",
+      "gameUrl": "quiz.html",  // CHANGED: Removed "games/"
+      "category": "Trivia"
     }
   ]
+}
 }
