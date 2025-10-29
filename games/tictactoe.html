@@ -1,1 +1,257 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - GANI HUB</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #141414; 
+            color: white; 
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .back-btn { 
+            background: #666; 
+            color: white; 
+            border: none;
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            cursor: pointer;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: #FF6B35;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        .game-info {
+            margin-bottom: 30px;
+        }
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .score {
+            background: #2d2d2d;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.2em;
+        }
+        .status {
+            font-size: 1.3em;
+            color: #00D4FF;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 30px auto;
+            max-width: 300px;
+        }
+        .cell {
+            background: #2d2d2d;
+            border: 3px solid #444;
+            border-radius: 10px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .cell:hover {
+            background: #3d3d3d;
+            border-color: #FF6B35;
+        }
+        .cell.x { color: #FF6B35; }
+        .cell.o { color: #00D4FF; }
+        .game-controls {
+            margin-top: 30px;
+        }
+        .control-btn {
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 1em;
+            transition: transform 0.2s;
+        }
+        .control-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Back to Games</button>
+
+    <div class="container">
+        <h1>⭕ Tic Tac Toe ❌</h1>
+        
+        <div class="game-info">
+            <div class="score-board">
+                <div class="score" id="playerScore">Player: 0</div>
+                <div class="score" id="computerScore">Computer: 0</div>
+            </div>
+            <div class="status" id="gameStatus">Your turn (X)</div>
+        </div>
+
+        <div class="game-board" id="gameBoard">
+            <div class="cell" onclick="makeMove(0)"></div>
+            <div class="cell" onclick="makeMove(1)"></div>
+            <div class="cell" onclick="makeMove(2)"></div>
+            <div class="cell" onclick="makeMove(3)"></div>
+            <div class="cell" onclick="makeMove(4)"></div>
+            <div class="cell" onclick="makeMove(5)"></div>
+            <div class="cell" onclick="makeMove(6)"></div>
+            <div class="cell" onclick="makeMove(7)"></div>
+            <div class="cell" onclick="makeMove(8)"></div>
+        </div>
+
+        <div class="game-controls">
+            <button onclick="resetGame()" class="control-btn">🔄 New Game</button>
+            <button onclick="resetScores()" class="control-btn">📊 Reset Scores</button>
+        </div>
+    </div>
+
+    <script>
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+        let gameActive = true;
+        let playerScore = 0;
+        let computerScore = 0;
+
+        const winningConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+            [0, 4, 8], [2, 4, 6] // diagonals
+        ];
+
+        function makeMove(cellIndex) {
+            if (board[cellIndex] !== '' || !gameActive || currentPlayer !== 'X') return;
+
+            board[cellIndex] = 'X';
+            const cell = document.getElementsByClassName('cell')[cellIndex];
+            cell.textContent = 'X';
+            cell.classList.add('x');
+            
+            if (checkWinner()) {
+                endGame('X');
+                return;
+            }
+
+            if (isBoardFull()) {
+                endGame('draw');
+                return;
+            }
+
+            currentPlayer = 'O';
+            document.getElementById('gameStatus').textContent = "Computer's turn (O)";
+            
+            setTimeout(computerMove, 1000);
+        }
+
+        function computerMove() {
+            if (!gameActive) return;
+
+            let availableCells = [];
+            for (let i = 0; i < 9; i++) {
+                if (board[i] === '') availableCells.push(i);
+            }
+
+            if (availableCells.length > 0) {
+                const randomCell = availableCells[Math.floor(Math.random() * availableCells.length)];
+                board[randomCell] = 'O';
+                const cell = document.getElementsByClassName('cell')[randomCell];
+                cell.textContent = 'O';
+                cell.classList.add('o');
+                
+                if (checkWinner()) {
+                    endGame('O');
+                    return;
+                }
+
+                if (isBoardFull()) {
+                    endGame('draw');
+                    return;
+                }
+
+                currentPlayer = 'X';
+                document.getElementById('gameStatus').textContent = "Your turn (X)";
+            }
+        }
+
+        function checkWinner() {
+            for (let condition of winningConditions) {
+                const [a, b, c] = condition;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function isBoardFull() {
+            return board.every(cell => cell !== '');
+        }
+
+        function endGame(winner) {
+            gameActive = false;
+            
+            if (winner === 'X') {
+                document.getElementById('gameStatus').textContent = "🎉 You win!";
+                playerScore++;
+                document.getElementById('playerScore').textContent = `Player: ${playerScore}`;
+            } else if (winner === 'O') {
+                document.getElementById('gameStatus').textContent = "🤖 Computer wins!";
+                computerScore++;
+                document.getElementById('computerScore').textContent = `Computer: ${computerScore}`;
+            } else {
+                document.getElementById('gameStatus').textContent = "🤝 It's a draw!";
+            }
+        }
+
+        function resetGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameActive = true;
+            
+            const cells = document.getElementsByClassName('cell');
+            for (let cell of cells) {
+                cell.textContent = '';
+                cell.classList.remove('x', 'o');
+            }
+            
+            document.getElementById('gameStatus').textContent = "Your turn (X)";
+        }
+
+        function resetScores() {
+            playerScore = 0;
+            computerScore = 0;
+            document.getElementById('playerScore').textContent = `Player: ${playerScore}`;
+            document.getElementById('computerScore').textContent = `Computer: ${computerScore}`;
+            resetGame();
+        }
+
+        function goBack() {
+            window.location.href = "games.html";
+        }
+    </script>
+</body>
+</html>
