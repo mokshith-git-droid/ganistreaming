@@ -1,0 +1,56 @@
+{
+  "movies": [
+    {
+      "id": 1,
+      "title": "Sample Movie 1",
+      "description": "This is a sample movie description",
+      "poster": "https://via.placeholder.com/300x450/FF6B35/white?text=MOVIE+1",
+      "videoUrl": "<iframe src='https://archive.org/embed/sample-movie-1' width='800' height='450' frameborder='0' webkitallowfullscreen='true' mozallowfullscreen='true' allowfullscreen></iframe>",
+      "genre": "Action"
+    },
+    {
+      "id": 2,
+      "title": "Sample Movie 2",
+      "description": "Another sample movie for your collection",
+      "poster": "https://via.placeholder.com/300x450/00D4FF/white?text=MOVIE+2", 
+      "videoUrl": "<iframe src='https://archive.org/embed/sample-movie-2' width='800' height='450' frameborder='0' webkitallowfullscreen='true' mozallowfullscreen='true' allowfullscreen></iframe>",
+      "genre": "Drama"
+    }
+  ],
+  "pdfs": [
+    {
+      "id": 1,
+      "title": "Mathematics Textbook",
+      "description": "Complete mathematics guide with examples",
+      "thumbnail": "https://via.placeholder.com/200x280/006400/white?text=MATH+PDF",
+      "pdfUrl": "https://example.com/math-textbook.pdf",
+      "category": "Education"
+    },
+    {
+      "id": 2, 
+      "title": "Physics Notes",
+      "description": "Comprehensive physics study material",
+      "thumbnail": "https://via.placeholder.com/200x280/008080/white?text=PHYSICS+PDF",
+      "pdfUrl": "https://example.com/physics-notes.pdf",
+      "category": "Education"
+    }
+  ],
+  "music": [
+    {
+      "id": 1,
+      "title": "Study Focus",
+      "artist": "Lofi Beats",
+      "cover": "https://via.placeholder.com/300x300/00008B/white?text=STUDY",
+      "audioUrl": "https://example.com/study-music.mp3",
+      "genre": "Lo-fi"
+    },
+    {
+      "id": 2,
+      "title": "Energy Boost",
+      "artist": "Upbeat Mix", 
+      "cover": "https://via.placeholder.com/300x300/8B0000/white?text=ENERGY",
+      "audioUrl": "https://example.com/energy-mix.mp3",
+      "genre": "Electronic"
+    }
+  ]
+}
