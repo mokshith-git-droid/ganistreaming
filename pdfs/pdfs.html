@@ -1,1 +1,163 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Library - GANI HUB</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #141414; 
+            color: white; 
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .back-btn { 
+            background: #666; 
+            color: white; 
+            border: none;
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            cursor: pointer;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #00D4FF;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+        }
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .pdf-card {
+            background: #2d2d2d;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border-left: 4px solid #006400;
+        }
+        .pdf-card:hover {
+            transform: translateY(-5px);
+        }
+        .pdf-thumbnail {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        .pdf-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .pdf-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,100,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .pdf-card:hover .pdf-overlay {
+            opacity: 1;
+        }
+        .pdf-info {
+            padding: 20px;
+        }
+        .pdf-title {
+            font-size: 1.3em;
+            margin-bottom: 8px;
+            color: white;
+        }
+        .pdf-category {
+            color: #00D4FF;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .pdf-desc {
+            color: #ccc;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        .pdf-pages {
+            color: #888;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+        .error {
+            text-align: center;
+            color: #ff4444;
+            font-size: 1.2em;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goHome()">← Back to Dashboard</button>
+
+    <div class="container">
+        <h1>📖 PDF Library</h1>
+        
+        <div class="pdf-grid" id="pdfsContainer">
+            <!-- PDFs will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        async function loadPDFs() {
+            try {
+                const response = await fetch('../manager.json');
+                const data = await response.json();
+                displayPDFs(data.pdfs);
+            } catch (error) {
+                document.getElementById('pdfsContainer').innerHTML = 
+                    '<p class="error">Error loading PDFs. Check manager.json file.</p>';
+            }
+        }
+
+        function displayPDFs(pdfs) {
+            const container = document.getElementById('pdfsContainer');
+            container.innerHTML = pdfs.map(pdf => `
+                <div class="pdf-card" onclick="openPDF(${pdf.id})">
+                    <div class="pdf-thumbnail">
+                        <img src="${pdf.thumbnail}" alt="${pdf.title}"
+                             onerror="this.src='https://via.placeholder.com/300x200/006400/white?text=PDF'">
+                        <div class="pdf-overlay">📖</div>
+                    </div>
+                    <div class="pdf-info">
+                        <h3 class="pdf-title">${pdf.title}</h3>
+                        <p class="pdf-category">${pdf.category}</p>
+                        <p class="pdf-desc">${pdf.description}</p>
+                        <p class="pdf-pages">Pages: ${pdf.pages}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openPDF(pdfId) {
+            window.location.href = `player.html?pdf=${pdfId}`;
+        }
+
+        function goHome() {
+            window.location.href = "../home.html";
+        }
+
+        loadPDFs();
+    </script>
+</body>
+</html>
