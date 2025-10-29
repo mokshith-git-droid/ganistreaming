@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Player - GANI HUB</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #141414; 
+            color: white; 
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .back-btn { 
+            background: #666; 
+            color: white; 
+            border: none;
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            cursor: pointer;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .movie-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .movie-title {
+            color: #FF6B35;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .movie-meta {
+            color: #ccc;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        .video-container {
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .video-player {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+        .movie-description {
+            background: #2d2d2d;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #FF6B35;
+        }
+        .description-title {
+            color: #FF6B35;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+        .description-text {
+            color: #ccc;
+            line-height: 1.6;
+        }
+        .error {
+            text-align: center;
+            color: #ff4444;
+            font-size: 1.2em;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Back to Movies</button>
 
+    <div class="container">
+        <div class="movie-header">
+            <h1 class="movie-title" id="movieTitle">Loading Movie...</h1>
+            <div class="movie-meta" id="movieMeta"></div>
+        </div>
+
+        <div class="video-container">
+            <div id="videoPlayer" class="video-player">
+                <!-- Video will be loaded here -->
+            </div>
+        </div>
+
+        <div class="movie-description">
+            <h3 class="description-title">About this movie</h3>
+            <p class="description-text" id="movieDescription"></p>
+        </div>
+    </div>
+
+    <script>
+        async function loadMovie() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const movieId = urlParams.get('movie');
+            
+            if (!movieId) {
+                showError('No movie selected');
+                return;
+            }
+
+            try {
+                const response = await fetch('../manager.json');
+                const data = await response.json();
+                const movie = data.movies.find(m => m.id == movieId);
+                
+                if (movie) {
+                    document.getElementById('movieTitle').textContent = movie.title;
+                    document.getElementById('movieMeta').textContent = `${movie.genre} • ${movie.year}`;
+                    document.getElementById('movieDescription').textContent = movie.description;
+                    document.getElementById('videoPlayer').innerHTML = movie.videoUrl;
+                } else {
+                    showError('Movie not found');
+                }
+            } catch (error) {
+                showError('Error loading movie');
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('movieTitle').textContent = 'Error';
+            document.getElementById('movieDescription').textContent = message;
+        }
+
+        function goBack() {
+            window.location.href = "movies.html";
+        }
+
+        loadMovie();
+    </script>
+</body>
+</html>
