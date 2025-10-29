@@ -3,13 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GANI STREAMING - PIN</title>
+    <title>GANI PERSONAL HUB</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
+            background: #141414; 
+            color: white; 
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+        
+        /* Screens */
+        .screen { display: none; min-height: 100vh; }
+        .screen.active { display: block; }
+        
+        /* PIN Screen */
+        #pinScreen { 
             background: linear-gradient(45deg, #1a1a1a, #FF6B35);
-            color: white; font-family: Arial, sans-serif;
-            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: center;
         }
         .pin-container { 
             text-align: center; background: rgba(0,0,0,0.8); 
@@ -30,29 +41,138 @@
             padding: 15px 30px; font-size: 1.1em; border-radius: 8px;
             cursor: pointer; margin-top: 15px; font-weight: bold;
         }
+        
+        /* Dashboard */
+        .dashboard { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+        .section { margin-bottom: 40px; }
+        .section-title { 
+            color: #FF6B35; font-size: 1.8em; 
+            margin-bottom: 20px; border-left: 4px solid #FF6B35;
+            padding-left: 15px;
+        }
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: #2d2d2d; border-radius: 12px; padding: 25px;
+            cursor: pointer; transition: transform 0.3s;
+            text-align: center;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card-icon { font-size: 2.5em; margin-bottom: 15px; }
+        .card-title { font-size: 1.2em; margin-bottom: 10px; }
+        .card-desc { color: #ccc; font-size: 0.9em; }
+        
+        /* Study Cards */
+        .study-card { border-left: 4px solid #00D4FF; }
+        .entertainment-card { border-left: 4px solid #FF6B35; }
     </style>
 </head>
 <body>
-    <div class="pin-container">
-        <h1>GANI STREAMING</h1>
-        <p>Enter PIN to access your personal movies</p>
-        <input type="password" id="pinInput" maxlength="4" placeholder="Enter PIN">
-        <button onclick="checkPin()">UNLOCK STREAMING</button>
+    <!-- PIN Screen -->
+    <div id="pinScreen" class="screen active">
+        <div class="pin-container">
+            <h1>GANI HUB</h1>
+            <p>Enter PIN to access your personal space</p>
+            <input type="password" id="pinInput" maxlength="4" placeholder="Enter PIN">
+            <button onclick="checkPin()">UNLOCK</button>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="screen">
+        <div class="dashboard">
+            <!-- Study Section -->
+            <div class="section">
+                <h2 class="section-title">📚 Study Zone</h2>
+                <div class="card-grid">
+                    <div class="card study-card" onclick="openStudy('notes')">
+                        <div class="card-icon">📝</div>
+                        <div class="card-title">Study Notes</div>
+                        <div class="card-desc">Access your study materials and notes</div>
+                    </div>
+                    <div class="card study-card" onclick="openStudy('books')">
+                        <div class="card-icon">📚</div>
+                        <div class="card-title">E-Books</div>
+                        <div class="card-desc">Your digital book collection</div>
+                    </div>
+                    <div class="card study-card" onclick="openStudy('todos')">
+                        <div class="card-icon">✅</div>
+                        <div class="card-title">Study Planner</div>
+                        <div class="card-desc">Track your study schedule</div>
+                    </div>
+                    <div class="card study-card" onclick="openStudy('resources')">
+                        <div class="card-icon">🔗</div>
+                        <div class="card-title">Resources</div>
+                        <div class="card-desc">Important links and references</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Entertainment Section -->
+            <div class="section">
+                <h2 class="section-title">🎬 Entertainment</h2>
+                <div class="card-grid">
+                    <div class="card entertainment-card" onclick="openMovies()">
+                        <div class="card-icon">🎬</div>
+                        <div class="card-title">Movie Library</div>
+                        <div class="card-desc">Your personal streaming collection</div>
+                    </div>
+                    <div class="card entertainment-card" onclick="openMusic()">
+                        <div class="card-icon">🎵</div>
+                        <div class="card-title">Music</div>
+                        <div class="card-desc">Your music playlist</div>
+                    </div>
+                    <div class="card entertainment-card" onclick="openGames()">
+                        <div class="card-icon">🎮</div>
+                        <div class="card-title">Games</div>
+                        <div class="card-desc">Quick browser games</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
+        const CORRECT_PIN = "2010";
+
         function checkPin() {
             const pin = document.getElementById('pinInput').value;
-            if (pin === "2010") {
-                // SIMPLE REDIRECT - this will definitely work!
-                window.location.href = "movies.html";
+            if (pin === CORRECT_PIN) {
+                showScreen('dashboard');
             } else {
                 alert('Wrong PIN! Try again.');
                 document.getElementById('pinInput').value = '';
             }
         }
 
-        // Enter key support
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Navigation functions
+        function openMovies() {
+            window.location.href = "movies.html";
+        }
+
+        function openStudy(section) {
+            alert(`Opening ${section} section - You can add this functionality!`);
+            // You can create study.html, notes.html, etc.
+        }
+
+        function openMusic() {
+            alert('Music player coming soon!');
+        }
+
+        function openGames() {
+            alert('Games section coming soon!');
+        }
+
+        // Enter key for PIN
         document.getElementById('pinInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') checkPin();
         });
