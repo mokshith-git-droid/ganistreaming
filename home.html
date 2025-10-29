@@ -92,19 +92,19 @@
                 <div class="card movies-card" onclick="openSection('movies')">
                     <div class="card-icon">🎬</div>
                     <h3 class="card-title">Movie Library</h3>
-                    <p class="card-desc">Stream your personal movie collection with high-quality playback</p>
+                    <p class="card-desc">Stream your personal movie collection</p>
                 </div>
                 
                 <div class="card music-card" onclick="openSection('music')">
                     <div class="card-icon">🎵</div>
                     <h3 class="card-title">Music Player</h3>
-                    <p class="card-desc">Listen to your favorite music with custom playlists</p>
+                    <p class="card-desc">Listen to your favorite music</p>
                 </div>
                 
                 <div class="card games-card" onclick="openSection('games')">
                     <div class="card-icon">🎮</div>
                     <h3 class="card-title">Games Collection</h3>
-                    <p class="card-desc">Play fun browser games to relax and unwind</p>
+                    <p class="card-desc">Play fun browser games</p>
                 </div>
             </div>
         </div>
@@ -115,7 +115,7 @@
                 <div class="card pdfs-card" onclick="openSection('pdfs')">
                     <div class="card-icon">📖</div>
                     <h3 class="card-title">PDF Library</h3>
-                    <p class="card-desc">Access your study materials, books, and documents</p>
+                    <p class="card-desc">Access your study materials and books</p>
                 </div>
             </div>
         </div>
@@ -127,15 +127,9 @@
                 'movies': 'movies/movies.html',
                 'pdfs': 'pdfs/pdfs.html', 
                 'music': 'music/music.html',
-                'games': 'games/'
+                'games': 'games/games.html'  // FIXED: Now goes to games browser
             };
-            
-            if (section === 'games') {
-                // For games, we'll show a selection page or go to first game
-                window.location.href = 'games/tictactoe.html';
-            } else {
-                window.location.href = routes[section];
-            }
+            window.location.href = routes[section];
         }
     </script>
 </body>
