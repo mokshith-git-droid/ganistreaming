@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game - GANI HUB (Mobile Ready)</title>
+    <title>Snake Game - GANI HUB (Mobile Ready - Centered Controls)</title>
     <style>
         /* General Styles & Layout */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,6 +30,9 @@
         }
         .container {
             text-align: center;
+            /* Added max-width for better mobile centering on smaller devices */
+            width: 100%;
+            max-width: 450px; 
         }
         h1 {
             color: #FF6B35;
@@ -107,7 +110,9 @@
             display: grid;
             grid-template-areas: ". up ." "left center right" ". down .";
             gap: 5px;
-            width: 180px; /* Set a fixed size for the D-pad area */
+            width: 180px;
+            margin-left: auto; /* Auto margin for centering */
+            margin-right: auto;
         }
 
         .dpad-btn {
@@ -118,8 +123,8 @@
             font-size: 1.5em;
             border-radius: 10px;
             cursor: pointer;
-            user-select: none; /* Prevent text selection on mobile */
-            -webkit-tap-highlight-color: transparent; /* Remove tap delay/highlight */
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
         .dpad-btn:active {
              background: #00D4FF;
@@ -130,14 +135,14 @@
         #down-btn { grid-area: down; }
         #left-btn { grid-area: left; }
         #right-btn { grid-area: right; }
-        #center-pad { grid-area: center; visibility: hidden; } /* Placeholder for center */
+        #center-pad { grid-area: center; visibility: hidden; }
 
-        /* Hide desktop instructions on small screens and vice-versa */
+        /* Media Queries for Control Visibility */
         @media (max-width: 600px) {
-            .instructions p:last-child { display: none; } /* Hide keyboard info */
+            .instructions p:last-child { display: none; }
         }
         @media (min-width: 601px) {
-            .dpad-container { display: none; } /* Hide D-pad on desktop */
+            .dpad-container { display: none; }
         }
     </style>
 </head>
@@ -322,9 +327,7 @@
         
         // --- Control Logic (Unifies Keyboard and Mobile) ---
         
-        // Central function to handle all direction input
         function changeDirection(keyPressed) {
-            // Only allow change if game is running AND a direction change hasn't happened this frame
             if (!gameRunning || changingDirection) return;
 
             const LEFT_KEY = 37;
@@ -340,7 +343,6 @@
             let newDx = dx;
             let newDy = dy;
             
-            // Check for opposite direction to prevent instant self-collision
             if (keyPressed === LEFT_KEY && !goingRight) {
                 newDx = -1;
                 newDy = 0;
@@ -355,14 +357,12 @@
                 newDy = 1;
             }
 
-            // Apply change if a valid move was chosen
             if (newDx !== dx || newDy !== dy) {
                 dx = newDx;
                 dy = newDy;
-                changingDirection = true; // Set flag to prevent further changes until next frame
+                changingDirection = true;
             }
         }
-
 
         // Keyboard controls (Desktop)
         document.addEventListener('keydown', (e) => {
