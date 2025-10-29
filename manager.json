@@ -3,36 +3,40 @@
     {
       "id": 1,
       "title": "Sample Movie 1",
-      "description": "This is a sample movie description",
-      "poster": "https://via.placeholder.com/300x450/FF6B35/white?text=MOVIE+1",
-      "videoUrl": "<iframe src='https://archive.org/embed/sample-movie-1' width='800' height='450' frameborder='0' webkitallowfullscreen='true' mozallowfullscreen='true' allowfullscreen></iframe>",
-      "genre": "Action"
+      "description": "This is a sample movie description for testing",
+      "poster": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/movies/movie1.jpg",
+      "videoUrl": "<iframe src='https://archive.org/embed/sample-movie-1' width='800' height='450' frameborder='0' allowfullscreen></iframe>",
+      "genre": "Action",
+      "year": "2024"
     },
     {
       "id": 2,
-      "title": "Sample Movie 2",
+      "title": "Sample Movie 2", 
       "description": "Another sample movie for your collection",
-      "poster": "https://via.placeholder.com/300x450/00D4FF/white?text=MOVIE+2", 
-      "videoUrl": "<iframe src='https://archive.org/embed/sample-movie-2' width='800' height='450' frameborder='0' webkitallowfullscreen='true' mozallowfullscreen='true' allowfullscreen></iframe>",
-      "genre": "Drama"
+      "poster": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/movies/movie2.jpg",
+      "videoUrl": "<iframe src='https://archive.org/embed/sample-movie-2' width='800' height='450' frameborder='0' allowfullscreen></iframe>",
+      "genre": "Drama",
+      "year": "2024"
     }
   ],
   "pdfs": [
     {
       "id": 1,
       "title": "Mathematics Textbook",
-      "description": "Complete mathematics guide with examples",
-      "thumbnail": "https://via.placeholder.com/200x280/006400/white?text=MATH+PDF",
-      "pdfUrl": "https://example.com/math-textbook.pdf",
-      "category": "Education"
+      "description": "Complete mathematics guide with examples and exercises",
+      "thumbnail": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/pdfs/math.jpg",
+      "pdfUrl": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/pdfs/mathematics.pdf",
+      "category": "Education",
+      "pages": "250"
     },
     {
-      "id": 2, 
-      "title": "Physics Notes",
-      "description": "Comprehensive physics study material",
-      "thumbnail": "https://via.placeholder.com/200x280/008080/white?text=PHYSICS+PDF",
-      "pdfUrl": "https://example.com/physics-notes.pdf",
-      "category": "Education"
+      "id": 2,
+      "title": "Physics Notes", 
+      "description": "Comprehensive physics study material with formulas",
+      "thumbnail": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/pdfs/physics.jpg",
+      "pdfUrl": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/pdfs/physics.pdf",
+      "category": "Education",
+      "pages": "180"
     }
   ],
   "music": [
@@ -40,17 +44,37 @@
       "id": 1,
       "title": "Study Focus",
       "artist": "Lofi Beats",
-      "cover": "https://via.placeholder.com/300x300/00008B/white?text=STUDY",
-      "audioUrl": "https://example.com/study-music.mp3",
-      "genre": "Lo-fi"
+      "cover": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/music/study.jpg",
+      "audioUrl": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/music/study-focus.mp3",
+      "genre": "Lo-fi",
+      "duration": "1:00:00"
     },
     {
       "id": 2,
       "title": "Energy Boost",
-      "artist": "Upbeat Mix", 
-      "cover": "https://via.placeholder.com/300x300/8B0000/white?text=ENERGY",
-      "audioUrl": "https://example.com/energy-mix.mp3",
-      "genre": "Electronic"
+      "artist": "Upbeat Mix",
+      "cover": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/music/energy.jpg", 
+      "audioUrl": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/music/energy-boost.mp3",
+      "genre": "Electronic",
+      "duration": "45:30"
+    }
+  ],
+  "games": [
+    {
+      "id": 1,
+      "title": "Tic Tac Toe",
+      "description": "Classic X and O game against computer",
+      "thumbnail": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/games/tictactoe.jpg",
+      "gameUrl": "games/tictactoe.html",
+      "category": "Puzzle"
+    },
+    {
+      "id": 2,
+      "title": "Memory Game",
+      "description": "Test your memory by matching pairs",
+      "thumbnail": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/games/memory.jpg",
+      "gameUrl": "games/memory.html",
+      "category": "Memory"
     }
   ]
 }
