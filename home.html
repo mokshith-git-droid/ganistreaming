@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GANI PERSONAL HUB</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #141414; 
+            color: white; 
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+        .dashboard {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .header h1 {
+            color: #FF6B35;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #ccc;
+            font-size: 1.2em;
+        }
+        .section {
+            margin-bottom: 60px;
+        }
+        .section-title {
+            color: #FF6B35;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 2px solid #FF6B35;
+            padding-bottom: 10px;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: #2d2d2d;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #FF6B35;
+            box-shadow: 0 15px 30px rgba(255,107,53,0.2);
+        }
+        .card-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: white;
+        }
+        .card-desc {
+            color: #ccc;
+            line-height: 1.6;
+        }
+        .movies-card { background: linear-gradient(135deg, #2d2d2d, #8B0000); }
+        .pdfs-card { background: linear-gradient(135deg, #2d2d2d, #006400); }
+        .music-card { background: linear-gradient(135deg, #2d2d2d, #00008B); }
+        .games-card { background: linear-gradient(135deg, #2d2d2d, #4B0082); }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>🎯 GANI PERSONAL HUB</h1>
+            <p>Your all-in-one study and entertainment center</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">🎬 Entertainment</h2>
+            <div class="card-grid">
+                <div class="card movies-card" onclick="openSection('movies')">
+                    <div class="card-icon">🎬</div>
+                    <h3 class="card-title">Movie Library</h3>
+                    <p class="card-desc">Stream your personal movie collection with high-quality playback</p>
+                </div>
+                
+                <div class="card music-card" onclick="openSection('music')">
+                    <div class="card-icon">🎵</div>
+                    <h3 class="card-title">Music Player</h3>
+                    <p class="card-desc">Listen to your favorite music with custom playlists</p>
+                </div>
+                
+                <div class="card games-card" onclick="openSection('games')">
+                    <div class="card-icon">🎮</div>
+                    <h3 class="card-title">Games Collection</h3>
+                    <p class="card-desc">Play fun browser games to relax and unwind</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">📚 Study Materials</h2>
+            <div class="card-grid">
+                <div class="card pdfs-card" onclick="openSection('pdfs')">
+                    <div class="card-icon">📖</div>
+                    <h3 class="card-title">PDF Library</h3>
+                    <p class="card-desc">Access your study materials, books, and documents</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openSection(section) {
+            const routes = {
+                'movies': 'movies/movies.html',
+                'pdfs': 'pdfs/pdfs.html', 
+                'music': 'music/music.html',
+                'games': 'games/'
+            };
+            
+            if (section === 'games') {
+                // For games, we'll show a selection page or go to first game
+                window.location.href = 'games/tictactoe.html';
+            } else {
+                window.location.href = routes[section];
+            }
+        }
+    </script>
+</body>
+</html>
