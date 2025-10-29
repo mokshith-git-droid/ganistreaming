@@ -1,1 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer - GANI HUB</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #141414; 
+            color: white; 
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .back-btn { 
+            background: #666; 
+            color: white; 
+            border: none;
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            cursor: pointer;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .pdf-title {
+            color: #00D4FF;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .pdf-meta {
+            color: #ccc;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        .pdf-container {
+            background: #2d2d2d;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .pdf-viewer {
+            width: 100%;
+            height: 700px;
+            border: none;
+        }
+        .pdf-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .action-btn {
+            background: #006400;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        .action-btn:hover {
+            background: #008000;
+        }
+        .pdf-description {
+            background: #2d2d2d;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #00D4FF;
+            margin-top: 20px;
+        }
+        .description-title {
+            color: #00D4FF;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+        .description-text {
+            color: #ccc;
+            line-height: 1.6;
+        }
+        .error {
+            text-align: center;
+            color: #ff4444;
+            font-size: 1.2em;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()">← Back to PDFs</button>
 
+    <div class="container">
+        <div class="pdf-header">
+            <h1 class="pdf-title" id="pdfTitle">Loading PDF...</h1>
+            <div class="pdf-meta" id="pdfMeta"></div>
+        </div>
+
+        <div class="pdf-container">
+            <iframe id="pdfViewer" class="pdf-viewer" src=""></iframe>
+        </div>
+
+        <div class="pdf-actions">
+            <button class="action-btn" onclick="downloadPDF()">📥 Download PDF</button>
+            <button class="action-btn" onclick="printPDF()">🖨️ Print PDF</button>
+        </div>
+
+        <div class="pdf-description">
+            <h3 class="description-title">About this document</h3>
+            <p class="description-text" id="pdfDescription"></p>
+        </div>
+    </div>
+
+    <script>
+        async function loadPDF() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pdfId = urlParams.get('pdf');
+            
+            if (!pdfId) {
+                showError('No PDF selected');
+                return;
+            }
+
+            try {
+                const response = await fetch('../manager.json');
+                const data = await response.json();
+                const pdf = data.pdfs.find(p => p.id == pdfId);
+                
+                if (pdf) {
+                    document.getElementById('pdfTitle').textContent = pdf.title;
+                    document.getElementById('pdfMeta').textContent = `${pdf.category} • ${pdf.pages} pages`;
+                    document.getElementById('pdfDescription').textContent = pdf.description;
+                    document.getElementById('pdfViewer').src = pdf.pdfUrl;
+                } else {
+                    showError('PDF not found');
+                }
+            } catch (error) {
+                showError('Error loading PDF');
+            }
+        }
+
+        function downloadPDF() {
+            const pdfUrl = document.getElementById('pdfViewer').src;
+            if (pdfUrl) {
+                const link = document.createElement('a');
+                link.href = pdfUrl;
+                link.download = document.getElementById('pdfTitle').textContent + '.pdf';
+                link.click();
+            }
+        }
+
+        function printPDF() {
+            const pdfFrame = document.getElementById('pdfViewer');
+            pdfFrame.contentWindow.print();
+        }
+
+        function showError(message) {
+            document.getElementById('pdfTitle').textContent = 'Error';
+            document.getElementById('pdfDescription').textContent = message;
+        }
+
+        function goBack() {
+            window.location.href = "pdfs.html";
+        }
+
+        loadPDF();
+    </script>
+</body>
+</html>
