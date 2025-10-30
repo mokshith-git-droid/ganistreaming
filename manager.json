@@ -22,12 +22,12 @@
   "pdfs": [
     {
       "id": 1,
-      "title": "Mathematics Textbook",
-      "description": "Complete mathematics guide with examples and exercises",
+      "title": "Computer selfmade notes",
+      "description": "9th class java revision ",
       "thumbnail": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/posters/pdfs/math.jpg",
-      "pdfUrl": "https://raw.githubusercontent.com/yourusername/gani-personal-hub/main/pdfs/mathematics.pdf",
+      "pdfUrl": "https://github.com/mokshith-git-droid/ganistreaming/raw/refs/heads/main/pdfs/IMG_20250814_171328.pdf",
       "category": "Education",
-      "pages": "250"
+      "pages": "40"
     },
     {
       "id": 2,
